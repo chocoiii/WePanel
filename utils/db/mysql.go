@@ -2,10 +2,15 @@ package db
 
 import (
 	"WePanel/global"
+	"WePanel/orm"
 	"WePanel/utils/config"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
+
+func AutoMigrate() {
+	_ = global.DB.AutoMigrate(&orm.User{})
+}
 
 func Init() {
 	var username = config.GetConfig("Mysql", "username")
@@ -19,29 +24,5 @@ func Init() {
 		global.LOG.Fatalf("mysql connect failed: %s", err)
 	}
 	global.DB = db
+	AutoMigrate()
 }
-
-//func Add(db *gorm.DB, model interface{}, createMap map[string]interface{}) error{
-//	err := db.Model(model).Create(createMap).Error
-//	if err != nil {
-//		return err
-//	}
-//	return nil
-//}
-//
-//func BatchAdd(db *gorm.DB, model interface{}, createMap []map[string]interface{}) error{
-//	err := db.Model(model).Create(createMap).Error
-//	if err != nil {
-//		return err
-//	}
-//	return nil
-//}
-//
-//func Update(db *gorm.DB, model interface{}, conditions map[string]interface{}, updates map[string]interface{}) error{
-//	conditionsExpressions := expressions.NewBuilder().Assignments(conditions)
-//	err := db.Model(model).Where(conditionsExpressions).Updates(updates)
-//	if err != nil {
-//		return err
-//	}
-//	return nil
-//}

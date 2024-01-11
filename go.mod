@@ -5,6 +5,7 @@ go 1.20
 require (
 	github.com/Unknwon/goconfig v1.0.0
 	github.com/antonfisher/nested-logrus-formatter v1.3.1
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/gin-gonic/gin v1.9.1
 	github.com/lestrrat-go/file-rotatelogs v2.4.0+incompatible
 	github.com/rifflock/lfshook v0.0.0-20180920164130-b9218ef580f5

@@ -17,7 +17,7 @@ import (
 var Router *gin.Engine
 
 func InitRouter(Router *gin.Engine) {
-	router.TestRouter{}.InitRouter(Router)
+	router.AccountRouter{}.InitRouter(Router)
 }
 
 func Init() {
