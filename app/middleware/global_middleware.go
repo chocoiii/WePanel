@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-func Cors() gin.HandlerFunc {
+func CorsMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.Writer.Header().Add("Access-Control-Allow-Origin", "*")
 		c.Next()
@@ -38,24 +38,12 @@ func TransactionMiddleware(c *gin.Context) {
 	c.Next()
 }
 
-type UserDto struct {
-	Name      string `json:"name"` //由于返回前端的变量一般都是小写开头，这里规范一下
-	Telephone string `json:"telephone"`
-}
-
-func ToUserDto(user *orm.User) UserDto {
-	return UserDto{
-		Name:      user.Username,
-		Telephone: user.Telephone,
-	}
-}
-
 // AuthMiddleware 验证解析token
 func AuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		//获取authorization header
 		tokenString := c.GetHeader("Authorization")
-
+		global.LOG.Info(tokenString)
 		//验证token格式,若token为空或不是以Bearer开头，则token格式不对
 		if tokenString == "" || !strings.HasPrefix(tokenString, "Bearer") {
 			c.JSON(http.StatusUnauthorized, gin.H{"code": 401, "msg": "权限不足"})
@@ -83,10 +71,12 @@ func AuthMiddleware() gin.HandlerFunc {
 			c.Abort()
 			return
 		}
-
+		var userData = global.UserData{
+			Username:  user.Username,
+			Telephone: user.Telephone,
+		}
 		//若存在该用户则将用户信息写入上下文
-		userDto := ToUserDto(&user)
-		c.Set("user", userDto)
+		c.Set("user", userData)
 		c.Next()
 	}
 }

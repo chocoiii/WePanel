@@ -27,7 +27,6 @@ func (t AccountApi) Login(c *gin.Context) {
 		response.Fail(c, nil, "用户名不存在")
 		return
 	}
-	global.LOG.Info(user.Password)
 	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password)); err != nil {
 		global.LOG.Errorf("[%s] login failed: password wrong: %s", username, err)
 		response.Fail(c, nil, "密码错误")

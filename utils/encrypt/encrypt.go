@@ -34,7 +34,6 @@ func GetToken(user orm.User) (string, error) {
 
 func ParseToken(tokenString string) (*jwt.Token, *Claims, error) {
 	claims := &Claims{}
-
 	token, err := jwt.ParseWithClaims(tokenString, claims,
 		func(token *jwt.Token) (i interface{}, err error) {
 			return jwtKey, nil

@@ -23,7 +23,6 @@ func InitRouter(Router *gin.Engine) {
 func Init() {
 	mode := config.GetConfig("app", "mode")
 	port := config.GetConfig("app", "port")
-	global.LOG.Info(mode)
 	switch mode {
 	case "debug":
 		gin.SetMode(gin.DebugMode)
@@ -34,8 +33,9 @@ func Init() {
 	}
 
 	Router = gin.Default()
-	Router.Use(middleware.Cors())
+	Router.Use(middleware.CorsMiddleware())
 	Router.Use(middleware.TransactionMiddleware)
+	Router.Use(middleware.AuthMiddleware())
 	InitRouter(Router)
 
 	srv := &http.Server{
