@@ -1,7 +1,7 @@
 package encrypt
 
 import (
-	"WePanel/orm"
+	"WePanel/backend/orm"
 	"github.com/dgrijalva/jwt-go"
 	"time"
 )

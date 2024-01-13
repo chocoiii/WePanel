@@ -1,7 +1,7 @@
 package router
 
 import (
-	"WePanel/app/api"
+	"WePanel/backend/app/api"
 	"github.com/gin-gonic/gin"
 )
 

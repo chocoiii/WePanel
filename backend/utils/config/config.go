@@ -1,7 +1,7 @@
 package config
 
 import (
-	"WePanel/global"
+	"WePanel/backend/global"
 	"github.com/Unknwon/goconfig"
 )
 

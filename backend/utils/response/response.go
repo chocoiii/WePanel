@@ -20,3 +20,7 @@ func Success(c *gin.Context, data gin.H, msg string) {
 func Fail(c *gin.Context, data gin.H, msg string) {
 	Response(c, http.StatusBadRequest, 400, data, msg)
 }
+
+func Unauthorized(c *gin.Context) {
+	Response(c, http.StatusUnauthorized, 401, nil, "权限不足")
+}

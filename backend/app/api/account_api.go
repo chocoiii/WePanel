@@ -1,10 +1,10 @@
 package api
 
 import (
-	"WePanel/global"
-	"WePanel/orm"
-	"WePanel/utils/encrypt"
-	"WePanel/utils/response"
+	"WePanel/backend/global"
+	"WePanel/backend/orm"
+	"WePanel/backend/utils/encrypt"
+	"WePanel/backend/utils/response"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"

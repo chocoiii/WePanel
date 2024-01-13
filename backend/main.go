@@ -1,7 +1,7 @@
 package main
 
 import (
-	"WePanel/server"
+	"WePanel/backend/server"
 )
 
 func main() {

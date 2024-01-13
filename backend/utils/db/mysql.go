@@ -1,9 +1,9 @@
 package db
 
 import (
-	"WePanel/global"
-	"WePanel/orm"
-	"WePanel/utils/config"
+	"WePanel/backend/global"
+	"WePanel/backend/orm"
+	"WePanel/backend/utils/config"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )

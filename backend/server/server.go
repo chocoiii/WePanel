@@ -1,9 +1,9 @@
 package server
 
 import (
-	"WePanel/app"
-	"WePanel/utils/db"
-	"WePanel/utils/logs"
+	"WePanel/backend/app"
+	"WePanel/backend/utils/db"
+	"WePanel/backend/utils/logs"
 )
 
 func Start() {

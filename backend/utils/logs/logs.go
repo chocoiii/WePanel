@@ -1,8 +1,8 @@
 package logs
 
 import (
-	"WePanel/global"
-	"WePanel/utils/config"
+	"WePanel/backend/global"
+	"WePanel/backend/utils/config"
 	nested "github.com/antonfisher/nested-logrus-formatter"
 	rotatelogs "github.com/lestrrat-go/file-rotatelogs"
 	"github.com/rifflock/lfshook"

@@ -1,9 +1,10 @@
 package middleware
 
 import (
-	"WePanel/global"
-	"WePanel/orm"
-	"WePanel/utils/encrypt"
+	"WePanel/backend/global"
+	"WePanel/backend/orm"
+	"WePanel/backend/utils/encrypt"
+	"WePanel/backend/utils/response"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strings"
@@ -46,7 +47,8 @@ func AuthMiddleware() gin.HandlerFunc {
 		global.LOG.Info(tokenString)
 		//验证token格式,若token为空或不是以Bearer开头，则token格式不对
 		if tokenString == "" || !strings.HasPrefix(tokenString, "Bearer") {
-			c.JSON(http.StatusUnauthorized, gin.H{"code": 401, "msg": "权限不足"})
+			global.LOG.Error("Token's format wrong")
+			response.Unauthorized(c)
 			c.Abort() //将此次请求抛弃
 			return
 		}
@@ -56,7 +58,8 @@ func AuthMiddleware() gin.HandlerFunc {
 		//从tokenString中解析信息
 		token, claims, err := encrypt.ParseToken(tokenString)
 		if err != nil || !token.Valid {
-			c.JSON(http.StatusUnauthorized, gin.H{"code": 401, "msg": "权限不足"})
+			global.LOG.Errorf("Parse token failed: %s", err)
+			response.Unauthorized(c)
 			c.Abort()
 			return
 		}
@@ -67,7 +70,8 @@ func AuthMiddleware() gin.HandlerFunc {
 		global.DB.First(&user, userId)
 
 		if user.ID == 0 {
-			c.JSON(http.StatusUnauthorized, gin.H{"code": 401, "msg": "权限不足"})
+			global.LOG.Error("User don't existed")
+			response.Unauthorized(c)
 			c.Abort()
 			return
 		}

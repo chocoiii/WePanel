@@ -1,10 +1,10 @@
 package app
 
 import (
-	"WePanel/app/middleware"
-	"WePanel/app/router"
-	"WePanel/global"
-	"WePanel/utils/config"
+	"WePanel/backend/app/middleware"
+	"WePanel/backend/app/router"
+	"WePanel/backend/global"
+	"WePanel/backend/utils/config"
 	"context"
 	"errors"
 	"github.com/gin-gonic/gin"
