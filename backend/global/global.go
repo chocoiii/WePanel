@@ -18,7 +18,7 @@ const (
 
 var (
 	BASEDIR, _ = os.Getwd()
-	CONFIGDIR  = filepath.Join(BASEDIR, "config", "config.ini")
+	CONFIGDIR  = filepath.Join(BASEDIR, "backend", "config", "config.ini")
 	LOG        *logrus.Logger
 	DB         *gorm.DB
 )
