@@ -9,10 +9,11 @@
     "dev": "vite --config ./config/vite.config.dev.ts",
     "build": "vue-tsc --noEmit && vite build --config ./config/vite.config.prod.ts",
     "report": "cross-env REPORT=true npm run build",
+    
     "preview": "npm run build && vite preview --host",
     "type:check": "vue-tsc --noEmit --skipLibCheck",
     "lint-staged": "npx lint-staged",
-    "prepare": "husky install"
+    "prepare": "cd .. && cd .. && husky install superjsonweb/.husky"
   },
   "lint-staged": {
     "*.{js,ts,jsx,tsx}": [
