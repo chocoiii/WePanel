@@ -14,6 +14,7 @@ pipeline {
         stage('1.拉取代码'){
             steps {
                 dir('/home/WePanel'){
+                    cleanWs()
                     git branch: "${git_branch}", url: "${git_address}"
                 }
             }
