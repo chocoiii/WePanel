@@ -43,6 +43,13 @@ func TransactionMiddleware(c *gin.Context) {
 // AuthMiddleware 验证解析token
 func AuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		requestURL := c.Request.URL.Path
+		baseRouter := strings.Split(requestURL, "/")[1]
+		// 排除account路由
+		if baseRouter == "account" {
+			c.Next()
+			return
+		}
 		//获取authorization header
 		tokenString := c.GetHeader("Authorization")
 		//验证token格式,若token为空或不是以Bearer开头，则token格式不对

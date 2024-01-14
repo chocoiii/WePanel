@@ -4,6 +4,7 @@ pipeline {
     agent any
     tools {
         go 'Go'
+        nodejs 'NodeJs'
     }
     environment{
         git_address = "https://github.com/chocoiii/WePanel.git"
@@ -20,8 +21,7 @@ pipeline {
             }
         }
 
-
-        stage('2.编译程序'){
+        stage('2.后端编译'){
             steps {
                 dir('/home/WePanel'){
                     sh 'export GOROOT=/usr/local/go'
@@ -34,7 +34,7 @@ pipeline {
             }
         }
 
-        stage('3.部署程序'){
+        stage('3.后端部署'){
             steps {
                 dir('/home/WePanel'){
                     script{
@@ -47,6 +47,37 @@ pipeline {
                             echo "None"
                         }
                         sh 'JENKINS_NODE_COOKIE=dontKillMe nohup /home/WePanel/WePanel >WePanel.log&'
+                    }
+                }
+
+            }
+        }
+
+        stage('4.前端构建'){
+            steps {
+                dir('/home/WePanel/frontend/webPanel'){
+                    script{
+                        sh 'npm install --ignore-scripts --registry=https://registry.npm.taobao.org'
+                        sh 'npm run build'
+                    }
+                }
+
+            }
+        }
+
+        stage('5.前端部署'){
+            steps {
+                dir('/home/WePanel/frontend/webPanel'){
+                    script{
+                        processId = sh(script: "lsof -t -i :5173 || true", returnStatus: true, returnStdout: true)
+                        if (processId) {
+                            echo "${processId}"
+                            sh 'sudo kill -9 ${processId}'
+                        }
+                        else{
+                            echo "None"
+                        }
+                        sh 'JENKINS_NODE_COOKIE=dontKillMe nohup npm run dev >webPanel.log&'
                     }
                 }
 

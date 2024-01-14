@@ -6,7 +6,7 @@ export default mergeConfig(
   {
     mode: 'development',
     server: {
-      open: true,
+      open: process.env.VITE_OPEN === 'false',
       fs: {
         strict: true,
       },
