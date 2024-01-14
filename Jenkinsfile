@@ -4,6 +4,7 @@ pipeline {
     agent any
     tools {
         go 'Go'
+        nodejs 'NodeJs'
     }
     environment{
         git_address = "https://github.com/chocoiii/WePanel.git"
