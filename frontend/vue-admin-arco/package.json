@@ -9,7 +9,7 @@
     "dev": "vite --config ./config/vite.config.dev.ts",
     "build": "vue-tsc --noEmit --skipLibCheck && vite build --config ./config/vite.config.prod.ts",
     "lint-staged": "npx lint-staged",
-    "prepare": "husky install",
+    "prepare": "cd .. && cd .. && husky install superjsonweb/.husky",
     "build:normal": "vite build --config ./config/vite.config.prod.ts",
     "module:update": "ncu -u --registry https://registry.npmmirror.com&&cnpm i",
     "lint:eslint": "eslint {src,mock}/**/*.{vue,js,ts} --fix"
