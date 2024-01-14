@@ -7,11 +7,6 @@ import (
 	"path/filepath"
 )
 
-type UserData struct {
-	Username  string
-	Telephone string
-}
-
 const (
 	TimeFormat string = "2006-01-02 15:04:05"
 )

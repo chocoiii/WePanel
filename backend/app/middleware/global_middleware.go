@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"WePanel/backend/app/dto"
 	"WePanel/backend/global"
 	"WePanel/backend/orm"
 	"WePanel/backend/utils/encrypt"
@@ -74,12 +75,12 @@ func AuthMiddleware() gin.HandlerFunc {
 			c.Abort()
 			return
 		}
-		var userData = global.UserData{
+		var userDto = dto.UserDto{
 			Username:  user.Username,
 			Telephone: user.Telephone,
 		}
 		//若存在该用户则将用户信息写入上下文
-		c.Set("user", userData)
+		c.Set("user", userDto)
 		c.Next()
 	}
 }
