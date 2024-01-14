@@ -44,6 +44,7 @@ func AuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		//获取authorization header
 		tokenString := c.GetHeader("Authorization")
+		global.LOG.Info(tokenString)
 		//验证token格式,若token为空或不是以Bearer开头，则token格式不对
 		if tokenString == "" || !strings.HasPrefix(tokenString, "Bearer") {
 			global.LOG.Error("Token's format wrong")
