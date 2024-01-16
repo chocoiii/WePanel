@@ -12,6 +12,11 @@ pipeline {
     }
 
     stages {
+        stage{
+            steps{
+                echo action
+            }
+        }
         stage('1.拉取代码'){
             steps {
                 dir('/home/WePanel'){
