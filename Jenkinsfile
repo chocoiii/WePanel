@@ -12,17 +12,7 @@ pipeline {
     }
 
     stages {
-        stage('测试'){
-            steps {
-                echo env.CHANGE_TARGET
-            }
-        }
         stage('1.拉取代码'){
-            when {
-                expression {
-                    return env.CHANGE_ACTION == 'closed'
-                }
-            }
             steps {
                 dir('/home/WePanel'){
                     cleanWs()
@@ -32,11 +22,6 @@ pipeline {
         }
 
         stage('2.后端编译'){
-            when {
-                expression {
-                    return env.CHANGE_ACTION == 'closed'
-                }
-            }
             steps {
                 dir('/home/WePanel'){
                     sh 'export GOROOT=/usr/local/go'
@@ -50,11 +35,6 @@ pipeline {
         }
 
         stage('3.后端部署'){
-            when {
-                expression {
-                    return env.CHANGE_ACTION == 'closed'
-                }
-            }
             steps {
                 dir('/home/WePanel'){
                     script{
@@ -74,11 +54,6 @@ pipeline {
         }
 
         stage('4.前端构建'){
-            when {
-                expression {
-                    return env.CHANGE_ACTION == 'closed'
-                }
-            }
             steps {
                 dir('/home/WePanel/frontend/webPanel'){
                     script{
@@ -91,11 +66,6 @@ pipeline {
         }
 
         stage('5.前端部署'){
-            when {
-                expression {
-                    return env.CHANGE_ACTION == 'closed'
-                }
-            }
             steps {
                 dir('/home/WePanel/frontend/webPanel'){
                     script{
