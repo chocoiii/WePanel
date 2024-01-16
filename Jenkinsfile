@@ -12,6 +12,11 @@ pipeline {
     }
 
     stages {
+        stage('测试'){
+            steps {
+                echo env.CHANGE_ACTION
+            }
+        }
         stage('1.拉取代码'){
             when {
                 expression {
