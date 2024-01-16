@@ -57,7 +57,7 @@ pipeline {
             steps {
                 dir('/home/WePanel/frontend/webPanel'){
                     script{
-                        sh 'npm install --ignore-scripts --registry=https://registry.npm.taobao.org'
+                        sh 'npm install --ignore-scripts --registry=https://mirrors.cloud.tencent.com/npm/'
                         sh 'npm run build'
                     }
                 }

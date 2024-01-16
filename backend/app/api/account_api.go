@@ -17,8 +17,7 @@ func (t AccountApi) Login(c *gin.Context) {
 	password := c.PostForm("password")
 	var db *gorm.DB
 	if tx, exist := c.Get("tx"); exist {
-		tx, _ := tx.(*gorm.DB)
-		db = tx
+		db, _ = tx.(*gorm.DB)
 	}
 	var user orm.User
 	db.Where("username=?", username).First(&user)
@@ -49,8 +48,7 @@ func (t AccountApi) Register(c *gin.Context) {
 	telephone := c.PostForm("telephone")
 	var db *gorm.DB
 	if tx, exist := c.Get("tx"); exist {
-		tx, _ := tx.(*gorm.DB)
-		db = tx
+		db, _ = tx.(*gorm.DB)
 	}
 	if len(telephone) != 11 {
 		global.LOG.Errorf("[%s] register failed: telephone must be 11", username)
