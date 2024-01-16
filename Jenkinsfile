@@ -7,7 +7,7 @@ pipeline {
         nodejs 'NodeJs'
     }
     environment{
-        git_address = "https://github.com/chocoiii/WePanel.git"
+        git_address = "git@github.com:chocoiii/WePanel.git"
         git_branch = "main"
     }
 
