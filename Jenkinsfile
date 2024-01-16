@@ -14,7 +14,7 @@ pipeline {
     stages {
         stage('测试'){
             steps {
-                echo env.CHANGE_ACTION
+                echo env.CHANGE_TARGET
             }
         }
         stage('1.拉取代码'){
