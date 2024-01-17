@@ -73,6 +73,7 @@
   import { useUserStore } from '@/store';
   import useLoading from '@/hooks/loading';
   import type { LoginData } from '@/api/user';
+  import {login} from '@/api/user';
 
   const router = useRouter();
   const { t } = useI18n();
@@ -101,21 +102,40 @@
     if (!errors) {
       setLoading(true);
       try {
-        await userStore.login(values as LoginData);
-        const { redirect, ...othersQuery } = router.currentRoute.value.query;
-        router.push({
-          name: (redirect as string) || 'Workplace',
-          query: {
-            ...othersQuery,
-          },
-        });
-        Message.success(t('login.form.login.success'));
-        const { rememberPassword } = loginConfig.value;
-        const { username, password } = values;
+        const requestLoginForm = {
+          username:userInfo.username,
+          password:userInfo.password
+        };
+        const res = await login(requestLoginForm);
+        if(res.code === 200){
+          Message.success(t('login.form.login.success'));
+          const { rememberPassword } = loginConfig.value;
+          const { username, password } = values;
+          const { redirect, ...othersQuery } = router.currentRoute.value.query;
+          router.push({
+            name: (redirect as string) || 'Workplace',
+            query: {
+              ...othersQuery,
+            },
+          });
+        }
+        else
+          Message.error(t('login.form.login.error'));
+        // await userStore.login(values as LoginData);
+        // const { redirect, ...othersQuery } = router.currentRoute.value.query;
+        // router.push({
+        //   name: (redirect as string) || 'Workplace',
+        //   query: {
+        //     ...othersQuery,
+        //   },
+        // });
+        // Message.success(t('login.form.login.success'));
+        // const { rememberPassword } = loginConfig.value;
+        // const { username, password } = values;
         // 实际生产环境需要进行加密存储。
         // The actual production environment requires encrypted storage.
-        loginConfig.value.username = rememberPassword ? username : '';
-        loginConfig.value.password = rememberPassword ? password : '';
+        // loginConfig.value.username = rememberPassword ? username : '';
+        // loginConfig.value.password = rememberPassword ? password : '';
       } catch (err) {
         errorMessage.value = (err as Error).message;
       } finally {

@@ -11,7 +11,7 @@ export interface LoginRes {
   token: string;
 }
 export function login(data: LoginData) {
-  return axios.post<LoginRes>('/api/user/login', data);
+  return axios.post<LoginRes>('http://123.57.245.226:5000/account/login', data);
 }
 
 export function logout() {
