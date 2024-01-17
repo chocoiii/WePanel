@@ -13,7 +13,18 @@ import (
 
 func CorsMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		c.Writer.Header().Add("Access-Control-Allow-Origin", "*")
+		method := c.Request.Method
+		origin := c.Request.Header.Get("Origin")
+		if origin != "" {
+			c.Header("Access-Control-Allow-Origin", "*") // 可将将 * 替换为指定的域名
+			c.Header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, UPDATE")
+			c.Header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization")
+			c.Header("Access-Control-Expose-Headers", "Content-Length, Access-Control-Allow-Origin, Access-Control-Allow-Headers, Cache-Control, Content-Language, Content-Type")
+			c.Header("Access-Control-Allow-Credentials", "true")
+		}
+		if method == "OPTIONS" {
+			c.AbortWithStatus(http.StatusNoContent)
+		}
 		c.Next()
 	}
 }
@@ -46,48 +57,46 @@ func AuthMiddleware() gin.HandlerFunc {
 		requestURL := c.Request.URL.Path
 		baseRouter := strings.Split(requestURL, "/")[1]
 		// 排除account路由
-		if baseRouter == "account" {
-			c.Next()
-			return
-		}
-		//获取authorization header
-		tokenString := c.GetHeader("Authorization")
-		//验证token格式,若token为空或不是以Bearer开头，则token格式不对
-		if tokenString == "" || !strings.HasPrefix(tokenString, "Bearer") {
-			global.LOG.Error("Token's format wrong")
-			response.Unauthorized(c)
-			c.Abort() //将此次请求抛弃
-			return
-		}
+		if baseRouter != "account" {
+			//获取authorization header
+			tokenString := c.GetHeader("Authorization")
+			//验证token格式,若token为空或不是以Bearer开头，则token格式不对
+			if tokenString == "" || !strings.HasPrefix(tokenString, "Bearer") {
+				global.LOG.Error("Token's format wrong")
+				response.Unauthorized(c)
+				c.Abort() //将此次请求抛弃
+				return
+			}
 
-		tokenString = tokenString[7:] //token的前面是“bearer”，有效部分从第7位开始
+			tokenString = tokenString[7:] //token的前面是“bearer”，有效部分从第7位开始
 
-		//从tokenString中解析信息
-		token, claims, err := encrypt.ParseToken(tokenString)
-		if err != nil || !token.Valid {
-			global.LOG.Errorf("Parse token failed: %s", err)
-			response.Unauthorized(c)
-			c.Abort()
-			return
-		}
+			//从tokenString中解析信息
+			token, claims, err := encrypt.ParseToken(tokenString)
+			if err != nil || !token.Valid {
+				global.LOG.Errorf("Parse token failed: %s", err)
+				response.Unauthorized(c)
+				c.Abort()
+				return
+			}
 
-		// 查询tokenString中的user信息是否存在
-		userId := claims.UserId
-		var user orm.User
-		global.DB.First(&user, userId)
+			// 查询tokenString中的user信息是否存在
+			userId := claims.UserId
+			var user orm.User
+			global.DB.First(&user, userId)
 
-		if user.ID == 0 {
-			global.LOG.Error("User don't existed")
-			response.Unauthorized(c)
-			c.Abort()
-			return
+			if user.ID == 0 {
+				global.LOG.Error("User don't existed")
+				response.Unauthorized(c)
+				c.Abort()
+				return
+			}
+			var userDto = dto.UserDto{
+				Username:  user.Username,
+				Telephone: user.Telephone,
+			}
+			//若存在该用户则将用户信息写入上下文
+			c.Set("user", userDto)
 		}
-		var userDto = dto.UserDto{
-			Username:  user.Username,
-			Telephone: user.Telephone,
-		}
-		//若存在该用户则将用户信息写入上下文
-		c.Set("user", userDto)
 		c.Next()
 	}
 }
