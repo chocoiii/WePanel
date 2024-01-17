@@ -11,8 +11,13 @@ function start_app() {
         return 1
     fi
     echo "[info] start_app begins..."
+    if [ -e ./WePanel ];then
+        rm -rf ./WePanel
+    fi
+    export GOROOT=/usr/local/go
+    export PATH=$PATH:$GOROOT/bin
     go build -o WePanel backend/main.go
-    nohup /home/WePanel/WePanel >WePanel.log&
+    nohup ./WePanel >WePanel.log&
     if [ $? -ne 0 ];then
         echo "[error] start app failed!"
         return 1

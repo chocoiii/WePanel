@@ -102,12 +102,13 @@
     if (!errors) {
       setLoading(true);
       try {
-        const requestLoginForm = {
-          username:userInfo.username,
-          password:userInfo.password
-        };
+        const requestLoginForm = new FormData();
+        requestLoginForm.append("username",userInfo.username);
+        requestLoginForm.append("password",userInfo.password);
+        console.log(requestLoginForm);
         const res = await login(requestLoginForm);
-        if(res.code === 200){
+        console.log(res);
+        if(res.data.code === 200){
           Message.success(t('login.form.login.success'));
           const { rememberPassword } = loginConfig.value;
           const { username, password } = values;
